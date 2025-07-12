@@ -10,4 +10,4 @@ def add_transaction(txn: Transaction):
         GENERATED_TRANSACTIONS.pop(0)
 
 def get_transactions() -> List[Transaction]:
-    return GENERATED_TRANSACTIONS 
+    return GENERATED_TRANSACTIONS

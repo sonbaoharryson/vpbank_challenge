@@ -8,13 +8,20 @@ ANOMALY_TYPES = [
     "high_amount", "rare_location", "device_user_mismatch", "frequent_retries"
 ]
 
-BANKS = ["ACB", "BIDV", "VCB", "MB", "TCB", "VPB"]
+BANKS = ["ACB", "BIDV", "VCB", "MB", "TCB", "VPB", "SCB"]
 CHANNELS = ["API", "ATM", "POS", "INTERNET", "MOBILE_APP"]
 CURRENCIES = ["VND", "USD"]
 TRANSACTION_TYPES = ["IBFT", "QR_PAYMENT", "BILL_PAYMENT", "WALLET_TRANSFER"]
 STATUS = ["SUCCESS", "FAILED", "PENDING"]
 USER_AGENTS = [
-    "Windows 10", "MacOS Big Sur", "Ubuntu", "Android 12", "iOS 17"
+    "Windows 10", "MacOS Big Sur", "Ubuntu", "Android 12", "iOS 17", "Chrome 120", "Firefox 120", "Safari 17", "Edge 120",
+    "Android 13", "iOS 18", "Chrome 121", "Firefox 121", "Safari 18", "Edge 121", "Android 14", "iOS 19", "Chrome 122",
+    "Firefox 122", "Safari 19", "Edge 122", "Android 15", "iOS 20", "Chrome 123", "Firefox 123", "Safari 20", "Edge 123",
+    "Android 16", "iOS 21", "Chrome 124", "Firefox 124", "Safari 21", "Edge 124", "Android 17", "iOS 22", "Chrome 125",
+    "Firefox 125", "Safari 22", "Edge 125", "Android 18", "iOS 23", "Chrome 126", "Firefox 126", "Safari 23", "Edge 126",
+    "Android 19", "iOS 24", "Chrome 127", "Firefox 127", "Safari 24", "Edge 127", "Android 20", "iOS 25", "Chrome 128",
+    "Firefox 128", "Safari 25", "Edge 128", "Android 21", "iOS 26", "Chrome 129", "Firefox 129", "Safari 26", "Edge 129",
+    "Android 22", "iOS 27", "Chrome 130", "Firefox 130", "Safari 27", "Edge 130", "Android 23", "iOS 28", "Chrome 131"
 ]
 
 def simulate_transaction(anomaly_rate: float = 0.1) -> Transaction:

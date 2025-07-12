@@ -7,6 +7,7 @@ import asyncio
 app = FastAPI(title="Bank Transaction Simulation API")
 app.include_router(router)
 
+
 async def generate_transactions_periodically(anomaly_rate: float = 0.1):
     while True:
         txn = simulate_transaction(anomaly_rate)
