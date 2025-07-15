@@ -1,7 +1,7 @@
 from faker import Faker
 import random
 from models.transaction import Transaction
-
+from datetime import datetime
 fake = Faker()
 
 ANOMALY_TYPES = [
@@ -48,7 +48,7 @@ def simulate_transaction(anomaly_rate: float = 0.1) -> Transaction:
         latency_ms = random.randint(5000, 20000)
     return Transaction(
         transaction_id=fake.unique.bothify(text='TXN#####'),
-        transaction_date=fake.date_time_this_year().strftime('%Y-%m-%d %H:%M:%S'),
+        transaction_date=datetime.now(),
         transaction_type=random.choice(TRANSACTION_TYPES),
         amount=amount,
         currency=random.choice(CURRENCIES),

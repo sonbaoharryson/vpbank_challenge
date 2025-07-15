@@ -1,9 +1,10 @@
 from pydantic import BaseModel, Field
 from typing import Optional
+from datetime import datetime
 
 class Transaction(BaseModel):
     transaction_id: str
-    transaction_date: str
+    transaction_date: datetime
     transaction_type: str
     amount: float
     currency: str
@@ -26,7 +27,7 @@ class Transaction(BaseModel):
 
 class TransactionUnlabeled(BaseModel):
     transaction_id: str
-    transaction_date: str
+    transaction_date: datetime
     transaction_type: str
     amount: float
     currency: str
