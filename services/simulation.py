@@ -2,6 +2,8 @@ from faker import Faker
 import random
 from models.transaction import Transaction
 from datetime import datetime
+import pytz
+
 fake = Faker()
 
 ANOMALY_TYPES = [
@@ -330,7 +332,7 @@ def simulate_transaction(anomaly_rate: float = 0.5) -> Transaction:
     cif = f"CIF_{random.randint(100000, 999999)}"
     return Transaction(
         transaction_id=fake.unique.bothify(text='TXN#####'),
-        timestamp=datetime.now().isoformat(),
+        timestamp=datetime.now(pytz.timezone('Asia/Ho_Chi_Minh')).replace(tzinfo=None).isoformat(),
         transaction_type=random.choice(TRANSACTION_TYPES),
         amount=amount,
         currency=random.choice(CURRENCIES),
