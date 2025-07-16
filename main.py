@@ -32,7 +32,7 @@ async def generate_transactions_periodically(anomaly_rate: float = 0.5):
             )
             req.raise_for_status()
             if req.status_code == 200:
-                print(f"Transaction {txn.dict()} forwarded to AWS successfully.")
+                print(f"Transaction {[unlabeled_transaction.model_dump()]} forwarded to AWS successfully.")
         except Exception as e:
             print(f"Failed to forward to AWS: {e}")
             print([unlabeled_transaction.model_dump()])
