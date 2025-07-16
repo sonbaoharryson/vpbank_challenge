@@ -19,7 +19,7 @@ async def generate_transactions_periodically(anomaly_rate: float = 0.5):
             txn = simulate_transaction(anomaly_rate)
             add_transaction(txn)
             i+=1
-        unlabeled_transaction = convert_to_unlabeled(txn)
+        unlabeled_transaction = [convert_to_unlabeled(txn) for txn in get_transactions()]
 
         # Forward to AWS API Gateway
         try:
@@ -30,12 +30,12 @@ async def generate_transactions_periodically(anomaly_rate: float = 0.5):
 
             req = requests.post(
                 aws_api_url,
-                json=[unlabeled_transaction.model_dump()],  # This is the correct way!
+                json=unlabeled_transaction,  # This is the correct way!
                 headers={"Content-Type": "application/json"}
             )
             req.raise_for_status()
             if req.status_code == 200:
-                print(f"Transaction {[unlabeled_transaction.model_dump()]} forwarded to AWS successfully.")
+                print(f"Transaction {unlabeled_transaction} forwarded to AWS successfully.")
         except Exception as e:
             print(f"Failed to forward to AWS: {e}")
             print([unlabeled_transaction.model_dump()])
