@@ -38,7 +38,7 @@ async def generate_transactions_periodically(anomaly_rate: float = 0.5):
                 print(f"Transaction {unlabeled_transaction} forwarded to AWS successfully.")
         except Exception as e:
             print(f"Failed to forward to AWS: {e}")
-            print([unlabeled_transaction.model_dump()])
+            print(unlabeled_transaction)
         await asyncio.sleep(5)
 
 @app.on_event("startup")
