@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from api.endpoints import router
 from services.simulation import simulate_transaction
-from storage.memory import add_transaction
+from storage.memory import add_transaction, get_transactions
 import asyncio
 import requests
 from api.endpoints import convert_to_unlabeled
