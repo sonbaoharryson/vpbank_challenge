@@ -14,8 +14,11 @@ app.include_router(router)
 
 async def generate_transactions_periodically(anomaly_rate: float = 0.5):
     while True:
-        txn = simulate_transaction(anomaly_rate)
-        add_transaction(txn)
+        i=0
+        while i<100:
+            txn = simulate_transaction(anomaly_rate)
+            add_transaction(txn)
+            i+=1
         unlabeled_transaction = convert_to_unlabeled(txn)
 
         # Forward to AWS API Gateway
