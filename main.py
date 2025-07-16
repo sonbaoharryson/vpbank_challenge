@@ -24,7 +24,6 @@ async def generate_transactions_periodically(anomaly_rate: float = 0.5):
         # Forward to AWS API Gateway
         try:
             aws_api_url = "https://i6zvrxpu46.execute-api.ap-southeast-2.amazonaws.com/Prod/transcation_simulation" # Corrected resource name
-            payload = unlabeled_transaction.model_dump_json()
             # if isinstance(payload["timestamp"], datetime):
             #     payload["timestamp"] = payload["timestamp"].isoformat()
 
