@@ -24,22 +24,22 @@ async def generate_transactions_periodically(anomaly_rate: float = 0.5):
         transactions_dict = [txn.dict() for txn in unlabeled_transaction]
         transactions_json = json.dumps(transactions_dict, ensure_ascii=False, indent=4)
         # Forward to AWS API Gateway
-        try:
-            aws_api_url = "https://ilc8vdurx7.execute-api.ap-southeast-2.amazonaws.com/prod/transaction-simulation"
+        #try:
+            #aws_api_url = "https://ilc8vdurx7.execute-api.ap-southeast-2.amazonaws.com/prod/transaction-simulation"
             # if isinstance(payload["timestamp"], datetime):
             #     payload["timestamp"] = payload["timestamp"].isoformat()
 
-            req = requests.post(
-                aws_api_url,
-                json=transactions_dict,
-                headers={"Content-Type": "application/json"}
-            )
-            req.raise_for_status()
-            if req.status_code == 200:
-                print(f"Transaction {transactions_dict} forwarded to AWS successfully.")
-        except Exception as e:
-            print(f"Failed to forward to AWS: {e}")
-            print(transactions_json)
+            #req = requests.post(
+             #   aws_api_url,
+              #  json=transactions_dict,
+               # headers={"Content-Type": "application/json"}
+            #)
+            #req.raise_for_status()
+            #if req.status_code == 200:
+            #    print(f"Transaction {transactions_dict} forwarded to AWS successfully.")
+        #except Exception as e:
+        #    print(f"Failed to forward to AWS: {e}")
+        #    print(transactions_json)
 
         # Forward to Fabric EventStream
         service_bs_client = ServiceBusClient.from_connection_string("amqps://key_f92de1eb-253f-49e5-8ca5-8a747654bdec:z6jIgoRcGGC8vM0KBEJ3gDxr06wueTgHk%2BAEhENvZds%3D@esehsgcdh0u8583mngj0yl.servicebus.windows.net:5671/?verify=verify_none")
@@ -52,7 +52,7 @@ async def generate_transactions_periodically(anomaly_rate: float = 0.5):
             print(f"Error sending messages: {e}")
         finally:
             service_bs_client.close()
-        break
+
         await asyncio.sleep(10)
 
 @app.on_event("startup")
