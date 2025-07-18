@@ -7,6 +7,7 @@ import requests
 from api.endpoints import convert_to_unlabeled
 import json
 from typing import List
+from azure.servicebus import ServiceBusClient, ServiceBusMessage
 
 app = FastAPI(title="Bank Transaction Simulation API")
 app.include_router(router)
@@ -39,6 +40,18 @@ async def generate_transactions_periodically(anomaly_rate: float = 0.5):
         except Exception as e:
             print(f"Failed to forward to AWS: {e}")
             print(transactions_json)
+
+        # Forward to Fabric EventStream
+        service_bs_client = ServiceBusClient.from_connection_string("amqps://key_f92de1eb-253f-49e5-8ca5-8a747654bdec:z6jIgoRcGGC8vM0KBEJ3gDxr06wueTgHk%2BAEhENvZds%3D@esehsgcdh0u8583mngj0yl.servicebus.windows.net:5671/?verify=verify_none")
+        try:
+            with service_bs_client.get_queue_sender(entity_path) as sender:
+                batch_message = [ServiceBusMessage(json.dumps(msg)) for msg in message]
+                sender.send_messages(batch_message)
+                print(f"Successfully send {len(message)} records to EventStream.")
+        except Exception as e:
+            print(f"Error sending messages: {e}")
+        finally:
+            service_bs_client.close()
         break
         await asyncio.sleep(10)
 
