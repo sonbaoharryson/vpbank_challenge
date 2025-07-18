@@ -42,16 +42,29 @@ async def generate_transactions_periodically(anomaly_rate: float = 0.5):
         #    print(transactions_json)
 
         # Forward to Fabric EventStream
-        service_bs_client = ServiceBusClient.from_connection_string("amqps://key_f92de1eb-253f-49e5-8ca5-8a747654bdec:z6jIgoRcGGC8vM0KBEJ3gDxr06wueTgHk%2BAEhENvZds%3D@esehsgcdh0u8583mngj0yl.servicebus.windows.net:5671/?verify=verify_none")
-        try:
-            with service_bs_client.get_queue_sender(entity_path) as sender:
-                batch_message = [ServiceBusMessage(json.dumps(msg)) for msg in message]
-                sender.send_messages(batch_message)
-                print(f"Successfully send {len(message)} records to EventStream.")
-        except Exception as e:
-            print(f"Error sending messages: {e}")
-        finally:
-            service_bs_client.close()
+        entity_path = None
+        connection_string = "amqps://key_f92de1eb-253f-49e5-8ca5-8a747654bdec:z6jIgoRcGGC8vM0KBEJ3gDxr06wueTgHk%2BAEhENvZds%3D@esehsgcdh0u8583mngj0yl.servicebus.windows.net:5671/?verify=verify_none"
+        for param in connection_string.split(';'):
+            if param.startswith('EntityPath='):
+                entity_path = param.split('=')[1]
+                break
+            
+        if not entity_path:
+            raise ValueError("EntityPath is missing in the connection string. Please check you Fabric setup. Can get the connection string in EventStream after publishing a custom pipeline.")
+        
+        if isinstance(message, dict):
+            message = [message]
+        
+        service_bs_client = ServiceBusClient.from_connection_string(connection_string)
+            try:
+                with service_bs_client.get_queue_sender(entity_path) as sender:
+                    batch_message = [ServiceBusMessage(json.dumps(msg)) for msg in message]
+                    sender.send_messages(batch_message)
+                    print(f"Successfully send {len(message)} records to EventStream.")
+            except Exception as e:
+                print(f"Error sending messages: {e}")
+            finally:
+                service_bs_client.close()
 
         await asyncio.sleep(10)
 
