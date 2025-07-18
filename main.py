@@ -53,8 +53,8 @@ async def generate_transactions_periodically(anomaly_rate: float = 0.5):
         if not entity_path:
             raise ValueError("EntityPath is missing in the connection string. Please check you Fabric setup. Can get the connection string in EventStream after publishing a custom pipeline.")
         
-        if isinstance(message, dict):
-            message = [message]
+        if isinstance(transactions_json, dict):
+            message = [transactions_json]
         
         service_bs_client = ServiceBusClient.from_connection_string(connection_string)
         try:
