@@ -59,7 +59,7 @@ async def generate_transactions_periodically(anomaly_rate: float = 0.5):
                 batch_message = [ServiceBusMessage(json.dumps(txn)) for txn in transactions_dict]
 
                 sender.send_messages(batch_message)
-                print(f"Successfully send {len(message)} records to EventStream.")
+                print(f"Successfully send {len(batch_message)} records to EventStream.")
         except Exception as e:
             print(f"Error sending messages: {e}")
         finally:
