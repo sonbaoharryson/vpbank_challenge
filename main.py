@@ -56,15 +56,15 @@ async def generate_transactions_periodically(anomaly_rate: float = 0.5):
             message = [message]
         
         service_bs_client = ServiceBusClient.from_connection_string(connection_string)
-            try:
-                with service_bs_client.get_queue_sender(entity_path) as sender:
-                    batch_message = [ServiceBusMessage(json.dumps(msg)) for msg in message]
-                    sender.send_messages(batch_message)
-                    print(f"Successfully send {len(message)} records to EventStream.")
-            except Exception as e:
-                print(f"Error sending messages: {e}")
-            finally:
-                service_bs_client.close()
+        try:
+            with service_bs_client.get_queue_sender(entity_path) as sender:
+                batch_message = [ServiceBusMessage(json.dumps(msg)) for msg in message]
+                sender.send_messages(batch_message)
+                print(f"Successfully send {len(message)} records to EventStream.")
+        except Exception as e:
+            print(f"Error sending messages: {e}")
+        finally:
+            service_bs_client.close()
 
         await asyncio.sleep(10)
 
