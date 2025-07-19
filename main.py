@@ -18,6 +18,7 @@ app.include_router(router)
 async def generate_transactions_periodically(anomaly_rate: float = 0.5):
     while True:
         i=0
+        start_time = time.time()
         while i<100:
             txn = simulate_transaction(anomaly_rate)
             add_transaction(txn)
