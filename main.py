@@ -9,6 +9,7 @@ import json
 from typing import List
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
 import os
+import time
 
 app = FastAPI(title="Bank Transaction Simulation API")
 app.include_router(router)
@@ -22,6 +23,10 @@ async def generate_transactions_periodically(anomaly_rate: float = 0.5):
             add_transaction(txn)
             i+=1
         unlabeled_transaction = [convert_to_unlabeled(txn) for txn in get_transactions()]
+        
+        processing_time = time.time() - start_time
+        print(f"Cycle took {processing_time:.2f} seconds to process 100 transactions")
+        
         transactions_dict = [txn.dict() for txn in unlabeled_transaction]
         transactions_json = json.dumps(transactions_dict, ensure_ascii=False, indent=4)
         # Forward to AWS API Gateway
